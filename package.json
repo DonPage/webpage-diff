@@ -1,0 +1,21 @@
+{
+  "name": "demo",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "NODE_ENV=staging nightwatch -c ./nw.js -e phantom --tag diff",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "async": "^2.0.0-rc.3",
+    "chromedriver": "2.16.0",
+    "dalek-browser-ie": "0.0.5",
+    "image-diff": "^1.5.1",
+    "jquery": "^2.2.2",
+    "lodash": "^4.5.1",
+    "nightwatch": "^0.8.9",
+    "node-resemble-js": "0.0.5",
+    "phantomjs": "1.9.18",
+    "resemblejs": "^2.2.0",
+    "selenium-server": "2.49.0"
+  }
+}
