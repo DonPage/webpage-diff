@@ -4,7 +4,10 @@ const nw = {
     src_folders: ['./src/tests'],
     output_folder: './results',
 
-    globals_path: './src/config/environment',
+  test_runner: 'mocha',
+
+
+  globals_path: './src/config/environment',
     live_output: true,
 
     // tags: `${Tags.Epics.globals},${Tags.Types.smoke}`,
