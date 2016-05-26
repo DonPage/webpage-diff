@@ -1,30 +1,29 @@
 "use strict";
 var env = require('../config/environment');
 exports.home = env.urls.homepage;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = {
+exports.sitemap = {
     news: '/news',
     events: '/events',
     employee: {
         index: '/employee-spotlight',
-        stories: this.index + "/employee-stories",
-        featuredDepartments: this.index + "/departments",
-        patientStories: this.index + "/patient-stories",
-        why: this.index + "/why-florida-hospital",
-        photography: this.index + "/"
+        stories: function () { return (exports.sitemap.employee.index + "/employee-stories"); },
+        featuredDepartments: function () { return (exports.sitemap.employee.index + "/departments"); },
+        patientStories: function () { return (exports.sitemap.employee.index + "/patient-stories"); },
+        why: function () { return (exports.sitemap.employee.index + "/why-florida-hospital"); },
+        photography: function () { return (exports.sitemap.employee.index + "/fhotography"); }
     },
     services: {
         index: '/service',
-        transportation: this.index + "/transportation-and-map",
-        campusDining: this.index + "/campus-dining",
-        shops: this.index + "/retail-and-shops",
-        campusResources: this.index + "/campus-resources",
-        conciergeServices: this.index + "/concierge-services"
+        transportation: function () { return (exports.sitemap.services.index + "/transportation-and-map"); },
+        campusDining: function () { return (exports.sitemap.services.index + "/campus-dining"); },
+        shops: function () { return (exports.sitemap.services.index + "/retail-and-shops"); },
+        campusResources: function () { return (exports.sitemap.services.index + "/campus-resources"); },
+        conciergeServices: function () { return (exports.sitemap.services.index + "/concierge-services"); }
     },
     forNurses: {
         index: '/for-nurses',
-        governanceCouncil: this.index + "/nurse-governance-council",
-        practiceCouncil: this.index + "/content/nurse-practice-council-under-construction"
+        governanceCouncil: function () { return (exports.sitemap.forNurses.index + "/nurse-governance-council"); },
+        practiceCouncil: function () { return "/content/nurse-practice-council-under-construction"; }
     },
     about: '/about',
     contact: '/contact'

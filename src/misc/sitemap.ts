@@ -2,29 +2,29 @@ import env = require('../config/environment');
 
 export const home = env.urls.homepage;
 
-export default {
+export const sitemap = {
   news: '/news',
   events: '/events',
   employee: {
     index: '/employee-spotlight',
-    stories: `${this.index}/employee-stories`,
-    featuredDepartments: `${this.index}/departments`,
-    patientStories: `${this.index}/patient-stories`,
-    why: `${this.index}/why-florida-hospital`,
-    photography: `${this.index}/`
+    stories: () => `${sitemap.employee.index}/employee-stories`,
+    featuredDepartments: () => `${sitemap.employee.index}/departments`,
+    patientStories: () => `${sitemap.employee.index}/patient-stories`,
+    why: () => `${sitemap.employee.index}/why-florida-hospital`,
+    photography: () => `${sitemap.employee.index}/fhotography`
   },
   services: {
     index: '/service',
-    transportation: `${this.index}/transportation-and-map`,
-    campusDining: `${this.index}/campus-dining`,
-    shops: `${this.index}/retail-and-shops`,
-    campusResources: `${this.index}/campus-resources`,
-    conciergeServices: `${this.index}/concierge-services`
+    transportation: () => `${sitemap.services.index}/transportation-and-map`,
+    campusDining: () => `${sitemap.services.index}/campus-dining`,
+    shops: () => `${sitemap.services.index}/retail-and-shops`,
+    campusResources: () => `${sitemap.services.index}/campus-resources`,
+    conciergeServices: () => `${sitemap.services.index}/concierge-services`
   },
   forNurses: {
     index: '/for-nurses',
-    governanceCouncil: `${this.index}/nurse-governance-council`,
-    practiceCouncil: `${this.index}/content/nurse-practice-council-under-construction`
+    governanceCouncil: () => `${sitemap.forNurses.index}/nurse-governance-council`,
+    practiceCouncil: () => `/content/nurse-practice-council-under-construction`
   },
   about: '/about',
   contact: '/contact'
