@@ -1,8 +1,7 @@
 
-var ssDir = './results/screenshots';
+const ssDir = './results/screenshots';
 
 export function takeScreenshot(client, title: string, ...params: Array<Object>) {
-  console.log('params ', params);
   let env = process.env.NODE_ENV;
   let titleMods = `${title}?ENV=${env}`;
   if (params) {

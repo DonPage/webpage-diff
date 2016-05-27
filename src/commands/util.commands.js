@@ -5,7 +5,6 @@ function takeScreenshot(client, title) {
     for (var _i = 2; _i < arguments.length; _i++) {
         params[_i - 2] = arguments[_i];
     }
-    console.log('params ', params);
     var env = process.env.NODE_ENV;
     var titleMods = title + "?ENV=" + env;
     if (params) {

@@ -1,4 +1,4 @@
-import env = require('../config/environment');
+import * as env from '../config/environment/index';
 
 export const home = env.urls.homepage;
 
@@ -14,12 +14,11 @@ export const sitemap = {
     photography: () => `${sitemap.employee.index}/fhotography`
   },
   services: {
-    index: '/service',
-    transportation: () => `${sitemap.services.index}/transportation-and-map`,
-    campusDining: () => `${sitemap.services.index}/campus-dining`,
-    shops: () => `${sitemap.services.index}/retail-and-shops`,
-    campusResources: () => `${sitemap.services.index}/campus-resources`,
-    conciergeServices: () => `${sitemap.services.index}/concierge-services`
+    index: '/content/services-0',
+    transportation: () => `/services/transportation-and-map`,
+    campusDining: () => `/services/campus-dining`,
+    shops: () => `/services/retail-and-shops`,
+    campusResources: () => `/services/campus-resources`,
   },
   forNurses: {
     index: '/for-nurses',
