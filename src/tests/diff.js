@@ -37,7 +37,7 @@ describe('Find difference between Production and Staging', function () {
                 done();
             });
         });
-        it('Go to each sitemap page and take a screenshot from each viewport.', function (client) {
+        it('Go to each sitemap page and take a screenshot from each viewport.', function (client, nextTest) {
             recursiveObjMapping(sitemap_1.sitemap);
             async.eachSeries(urlArray, function (slug, next) {
                 client
@@ -56,12 +56,32 @@ describe('Find difference between Production and Staging', function () {
                     next();
                     done();
                 });
-            });
-            client
-                .pause(4000)
-                .expect.element('body').to.be.present.before(1000);
+            }, function () { return nextTest(); });
         });
-        it('Take screenshots of staging and compare with production.', function (client) {
+        it('Take screenshots of staging and compare with production.', function (client, nextTest) {
+            async.eachSeries(urlArray, function (slug, next) {
+                client
+                    .url(sitemap_1.home + slug)
+                    .waitForElementVisible('body')
+                    .pause(3000)
+                    .perform(function (client, done) {
+                    async.eachSeries(viewports, function (width, next) {
+                        client.resizeWindow(width, 5000).pause(1000)
+                            .perform(function (client, doneSS) {
+                            util_commands_1.takeScreenshot(client, "STAGING-" + slug.replace(new RegExp('/', 'g'), '|') + "-" + width).then(function () {
+                                var imgMod = slug.replace(new RegExp('/', 'g'), '|') + "-" + width;
+                                util_commands_1.compareImages("PRODUCTION-" + imgMod, "STAGING-" + imgMod, function (res) {
+                                    console.log(res);
+                                    next();
+                                    doneSS();
+                                });
+                            });
+                        });
+                    }, function () { done(); next(); });
+                    // next();
+                    // done();
+                });
+            }, function () { return nextTest(); });
         });
     });
 });

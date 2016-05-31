@@ -1,5 +1,5 @@
 ///<reference path="../../typings/mocha/mocha.d.ts"/>
-import {takeScreenshot} from '../commands/util.commands';
+import {takeScreenshot, compareImages} from '../commands/util.commands';
 import {home, sitemap} from '../misc/sitemap';
 import * as async from 'async';
 import * as env from '../config/environment/index';
@@ -40,7 +40,7 @@ describe('Find difference between Production and Staging', function() {
       });
     });
 
-    it('Go to each sitemap page and take a screenshot from each viewport.', (client) => {
+    it('Go to each sitemap page and take a screenshot from each viewport.', (client, nextTest) => {
       recursiveObjMapping(sitemap);
 
       async.eachSeries(urlArray, (slug, next) => {
@@ -62,15 +62,36 @@ describe('Find difference between Production and Staging', function() {
             next();
             done();
           });
-      });
-
-      client
-        .pause(4000)
-        .expect.element('body').to.be.present.before(1000);
+      }, () => nextTest());
     });
 
-    it('Take screenshots of staging and compare with production.', (client) => {
+    it('Take screenshots of staging and compare with production.', (client, nextTest) => {
+      async.eachSeries(urlArray, (slug, next) => {
+        client
+          .url(home + slug)
+          .waitForElementVisible('body')
+          .pause(3000)
+          .perform((client, done) => {
+            async.eachSeries(viewports, (width, next) => {
+              client.resizeWindow(width, 5000).pause(1000)
+                .perform((client, doneSS) => {
+                  takeScreenshot(client,
+                    `STAGING-${slug.replace(new RegExp('/', 'g'), '|')}-${width}`
+                  ).then(() => {
+                    let imgMod = `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
+                    compareImages(`PRODUCTION-${imgMod}`, `STAGING-${imgMod}`, res => {
+                      console.log(res);
+                      next();
+                      doneSS();
+                    });
 
+                  })
+                });
+            }, () => { done(); next();  });
+            // next();
+            // done();
+          });
+      }, () => nextTest())
     })
   });
 });

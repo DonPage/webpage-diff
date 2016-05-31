@@ -1,4 +1,5 @@
 "use strict";
+var imageDiff = require('image-diff');
 var ssDir = './results/screenshots';
 function takeScreenshot(client, title) {
     var params = [];
@@ -31,3 +32,20 @@ function takeScreenshot(client, title) {
     }
 }
 exports.takeScreenshot = takeScreenshot;
+function compareImages(img1, img2, cb) {
+    if (cb === void 0) { cb = function () { }; }
+    console.log("comparing \n  ../../results/screenshots/ " + img1 + "\n  ../../results/screenshots/ " + img2);
+    imageDiff({
+        actualImage: ssDir + "/" + img1 + ".png",
+        expectedImage: ssDir + "/" + img2 + ".png",
+        diffImage: 'WUT.png'
+    }, function (err, imagesAreSame) {
+        cb(imagesAreSame);
+    });
+    // fs.readFile(`../../results/screenshots/${img1}.png`, 'utf8', () => console.log("callback"));
+    // resemble(`./results/screenshots/${img1}.png`).compareTo(`./results/screenshots/${img2}.png`).ignoreColors().onComplete(data => {
+    //   console.log('compare data ', data);
+    //   return cb(data);
+    // })
+}
+exports.compareImages = compareImages;
