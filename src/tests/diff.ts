@@ -65,7 +65,7 @@ describe('Find difference between Production and Staging', function() {
       }, () => nextTest());
     });
 
-    it('Take screenshots of staging and compare with production.', (client, nextTest) => {
+    it('Take screenshots of staging and compare with production.', (client, done) => {
       async.eachSeries(urlArray, (slug, next) => {
         client
           .url(home + slug)
@@ -91,7 +91,7 @@ describe('Find difference between Production and Staging', function() {
             // next();
             // done();
           });
-      }, () => nextTest())
+      }, () => client.end(() => done()))
     })
   });
 });

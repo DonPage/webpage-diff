@@ -58,7 +58,7 @@ describe('Find difference between Production and Staging', function () {
                 });
             }, function () { return nextTest(); });
         });
-        it('Take screenshots of staging and compare with production.', function (client, nextTest) {
+        it('Take screenshots of staging and compare with production.', function (client, done) {
             async.eachSeries(urlArray, function (slug, next) {
                 client
                     .url(sitemap_1.home + slug)
@@ -81,7 +81,7 @@ describe('Find difference between Production and Staging', function () {
                     // next();
                     // done();
                 });
-            }, function () { return nextTest(); });
+            }, function () { return client.end(function () { return done(); }); });
         });
     });
 });
