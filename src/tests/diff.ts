@@ -1,8 +1,10 @@
 ///<reference path="../../typings/mocha/mocha.d.ts"/>
 import {takeScreenshot, compareImages} from '../commands/util.commands';
-import {home, sitemap} from '../misc/sitemap';
+import {sitemap} from '../misc/sitemap';
 import * as async from 'async';
 import * as env from '../config/environment/index';
+import {production} from '../config/environment/production';
+import {staging} from '../config/environment/staging';
 
 let urlArray = [];
 let viewports = [320, 768, 1200];
@@ -15,22 +17,25 @@ function recursiveObjMapping(obj) {
   }
 }
 
-describe('Find difference between Production and Staging', function() {
+describe('Find visual differences between Production and Staging', function() {
 
-  describe('Take Snapshot of the main production pages', function() {
+  describe('~~~', function() {
 
     before((client, done) => {
       console.log('env ', env);
       // Need to login.
       client
-        .url(home)
+        .url(production.urls.homepage)
         .waitForElementVisible('#bodyTag', 20000)
         .pause(1000)
-        .setValue('input[name=login]', env.login.username)
-        .setValue('input[name=passwd]', env.login.password)
+        .setValue('input[name=login]', production.login.username)
+        .setValue('input[name=passwd]', production.login.password)
         .pause(1000)
         .click('#Submit')
-        .perform((client) => done());
+        .perform((client) => {
+          recursiveObjMapping(sitemap);
+          done();
+        });
 
     });
 
@@ -40,12 +45,11 @@ describe('Find difference between Production and Staging', function() {
       });
     });
 
-    it('Go to each sitemap page and take a screenshot from each viewport.', (client, nextTest) => {
-      recursiveObjMapping(sitemap);
+    it('Take pictures of Production in different screen sizes.', (client, nextTest) => {
 
       async.eachSeries(urlArray, (slug, next) => {
         client
-          .url(home + slug)
+          .url(production.urls.homepage + slug)
           .waitForElementVisible('body')
           .pause(3000)
           .perform((client, done) => {
@@ -65,33 +69,47 @@ describe('Find difference between Production and Staging', function() {
       }, () => nextTest());
     });
 
-    it('Take screenshots of staging and compare with production.', (client, done) => {
+    it('Take pictures of Staging in different screen sizes.', (client, nextTest) => {
       async.eachSeries(urlArray, (slug, next) => {
         client
-          .url(home + slug)
+        //TODO: change this to staging url.
+          .url(production.urls.homepage + slug)
           .waitForElementVisible('body')
           .pause(3000)
           .perform((client, done) => {
             async.eachSeries(viewports, (width, next) => {
               client.resizeWindow(width, 5000).pause(1000)
-                .perform((client, doneSS) => {
+                .perform((client, done) => {
                   takeScreenshot(client,
                     `STAGING-${slug.replace(new RegExp('/', 'g'), '|')}-${width}`
-                  ).then(() => {
-                    let imgMod = `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
-                    compareImages(`PRODUCTION-${imgMod}`, `STAGING-${imgMod}`, res => {
-                      console.log(res);
-                      next();
-                      doneSS();
-                    });
-
-                  })
-                });
-            }, () => { done(); next();  });
-            // next();
-            // done();
+                  );
+                  next();
+                  done();
+                })
+            });
+            next();
+            done();
           });
-      }, () => client.end(() => done()))
-    })
+      }, () => nextTest());
+    });
+
+    it('Compare staging and production screenshots', (client, done) => {
+      async.eachSeries(urlArray, (slug, nextSlug) => {
+          async.eachSeries(viewports, (width, nextWidth) => {
+            let imgMod = `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
+            compareImages(`PRODUCTION-${imgMod}`, `STAGING-${imgMod}`, res => {
+              console.log(`
+              ---------------------------------
+              | Page: ${slug} @ ${width} px
+              | Same: ${res}
+              ---------------------------------
+              `);
+              nextWidth();
+            });
+          }, () => nextSlug())
+      }, () => console.log("DONE COMPARING"))
+    });
+
+
   });
 });

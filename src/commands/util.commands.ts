@@ -29,13 +29,13 @@ export function takeScreenshot(client, title: string, ...params: Array<Object>) 
 }
 
 export function compareImages (img1: string, img2: string, cb: Function = () => {}) {
-  console.log(`comparing 
-  ../../results/screenshots/ ${img1}
-  ../../results/screenshots/ ${img2}`);
+  // console.log(`comparing 
+  // ../../results/screenshots/ ${img1}
+  // ../../results/screenshots/ ${img2}`);
   imageDiff({
     actualImage: `${ssDir}/${img1}.png`,
     expectedImage: `${ssDir}/${img2}.png`,
-    diffImage: 'WUT.png'
+    diffImage: `${ssDir}/COMPARE:${img1}+${img2}.png`
   }, (err, imagesAreSame) => {
     cb(imagesAreSame);
   });
