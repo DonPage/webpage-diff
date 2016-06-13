@@ -19,7 +19,6 @@ function recursiveObjMapping(obj) {
 
 describe('Find visual differences between Production and Staging', function() {
 
-  describe('~~~', function() {
 
     before((client, done) => {
       console.log('env ', env);
@@ -73,7 +72,7 @@ describe('Find visual differences between Production and Staging', function() {
       async.eachSeries(urlArray, (slug, next) => {
         client
         //TODO: change this to staging url.
-          .url(production.urls.homepage + slug)
+          .url('http://prpl.rs' + slug)
           .waitForElementVisible('body')
           .pause(3000)
           .perform((client, done) => {
@@ -111,5 +110,4 @@ describe('Find visual differences between Production and Staging', function() {
     });
 
 
-  });
 });
