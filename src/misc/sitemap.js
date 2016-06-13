@@ -2,6 +2,7 @@
 var env = require('../config/environment/index');
 exports.home = env.urls.homepage;
 exports.sitemap = {
+    home: '/',
     // news: '/news',
     // events: '/events',
     // employee: {

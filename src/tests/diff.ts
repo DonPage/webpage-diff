@@ -2,7 +2,6 @@
 import {takeScreenshot, compareImages} from '../commands/util.commands';
 import {sitemap} from '../misc/sitemap';
 import * as async from 'async';
-import * as env from '../config/environment/index';
 import {production} from '../config/environment/production';
 import {staging} from '../config/environment/staging';
 
@@ -70,8 +69,7 @@ describe('Find visual differences between Production and Staging', function() {
 
       async.eachSeries(urlArray, (slug, next) => {
         client
-        //TODO: change this to staging url.
-          .url('http://prpl.rs' + slug)
+          .url(staging.urls.homepage + slug)
           .waitForElementVisible('body')
           .pause(3000)
           .perform((client, done) => {
@@ -92,7 +90,7 @@ describe('Find visual differences between Production and Staging', function() {
 
     });
 
-    it('Compare staging and production screenshots', (client, done) => {
+    it('Compare staging and production screenshots', (client) => {
 
       async.eachSeries(urlArray, (slug, nextSlug) => {
           async.eachSeries(viewports, (width, nextWidth) => {
@@ -106,7 +104,7 @@ describe('Find visual differences between Production and Staging', function() {
               nextWidth();
             });
           }, () => nextSlug())
-      }, () => console.log("DONE COMPARING"))
+      }, () => client.end())
 
     });
 
