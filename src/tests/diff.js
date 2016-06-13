@@ -24,11 +24,11 @@ describe('Find visual differences between Production and Staging', function () {
         client
             .url(production_1.production.urls.homepage)
             .waitForElementVisible('body', 20000)
-            .pause(1000)
             .perform(function () {
             recursiveObjMapping(sitemap_1.sitemap);
             done();
-        });
+        })
+            .pause(5000);
     });
     after(function (client, done) {
         client.end(function () {
@@ -45,9 +45,7 @@ describe('Find visual differences between Production and Staging', function () {
                 async.eachSeries(viewports, function (width, next) {
                     client.resizeWindow(width, 5000).pause(1000)
                         .perform(function (client, done) {
-                        util_commands_1.takeScreenshot(client, "PRODUCTION-" + imageModFunc(slug, width));
-                        next();
-                        done();
+                        util_commands_1.takeScreenshot(client, "PRODUCTION-" + imageModFunc(slug, width)).then(function () { next(); done(); });
                     });
                 });
                 next();
@@ -65,9 +63,7 @@ describe('Find visual differences between Production and Staging', function () {
                 async.eachSeries(viewports, function (width, next) {
                     client.resizeWindow(width, 5000).pause(1000)
                         .perform(function (client, done) {
-                        util_commands_1.takeScreenshot(client, "STAGING-" + imageModFunc(slug, width));
-                        next();
-                        done();
+                        util_commands_1.takeScreenshot(client, "STAGING-" + imageModFunc(slug, width)).then(function () { next(); done(); });
                     });
                 });
                 next();

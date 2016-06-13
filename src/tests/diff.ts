@@ -26,11 +26,11 @@ describe('Find visual differences between Production and Staging', function() {
       client
         .url(production.urls.homepage)
         .waitForElementVisible('body', 20000)
-        .pause(1000)
         .perform(() => {
           recursiveObjMapping(sitemap);
           done();
-        });
+        })
+        .pause(5000);
 
     });
 
@@ -53,9 +53,7 @@ describe('Find visual differences between Production and Staging', function() {
                 .perform((client, done) => {
                   takeScreenshot(client,
                     `PRODUCTION-${imageModFunc(slug, width)}`
-                  );
-                  next();
-                  done();
+                  ).then(() => { next(); done(); });
                 })
             });
             next();
@@ -78,9 +76,7 @@ describe('Find visual differences between Production and Staging', function() {
                 .perform((client, done) => {
                   takeScreenshot(client,
                     `STAGING-${imageModFunc(slug, width)}`
-                  );
-                  next();
-                  done();
+                  ).then(() => { next(); done(); });
                 })
             });
             next();
