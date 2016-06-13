@@ -11,11 +11,9 @@ out
 .lock-wscript
 
 # Results
-results
-.xml
+*.xml
+*.png
 
-# Secret
-src/config
 
 
 
