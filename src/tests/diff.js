@@ -7,6 +7,7 @@ var production_1 = require('../config/environment/production');
 var staging_1 = require('../config/environment/staging');
 var urlArray = [];
 var viewports = [320, 768, 1200];
+var imageModFunc = function (slug, width) { return (slug.replace(new RegExp('/', 'g'), '|') + "-" + width); };
 function recursiveObjMapping(obj) {
     // console.log('obj ', obj);
     for (var key in obj) {
@@ -18,7 +19,6 @@ function recursiveObjMapping(obj) {
             recursiveObjMapping(obj[key]);
     }
 }
-var imageModFunc = function (slug, width) { return (slug.replace(new RegExp('/', 'g'), '|') + "-" + width); };
 describe('Find visual differences between Production and Staging', function () {
     before(function (client, done) {
         client

@@ -7,6 +7,8 @@ import {staging} from '../config/environment/staging';
 
 let urlArray = [];
 let viewports = [320, 768, 1200];
+const imageModFunc = (slug: string, width: number) => `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
+
 
 function recursiveObjMapping(obj) {
   // console.log('obj ', obj);
@@ -17,7 +19,6 @@ function recursiveObjMapping(obj) {
   }
 }
 
-const imageModFunc = (slug, width) => `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
 
 describe('Find visual differences between Production and Staging', function() {
 
