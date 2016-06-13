@@ -8,6 +8,7 @@ import {staging} from '../config/environment/staging';
 
 let urlArray = [];
 let viewports = [320, 768, 1200];
+
 function recursiveObjMapping(obj) {
   // console.log('obj ', obj);
   for (let key in obj) {
@@ -17,21 +18,17 @@ function recursiveObjMapping(obj) {
   }
 }
 
+const imageModFunc = (slug, width) => `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
+
 describe('Find visual differences between Production and Staging', function() {
 
 
     before((client, done) => {
-      console.log('env ', env);
-      // Need to login.
       client
         .url(production.urls.homepage)
-        .waitForElementVisible('#bodyTag', 20000)
+        .waitForElementVisible('body', 20000)
         .pause(1000)
-        .setValue('input[name=login]', production.login.username)
-        .setValue('input[name=passwd]', production.login.password)
-        .pause(1000)
-        .click('#Submit')
-        .perform((client) => {
+        .perform(() => {
           recursiveObjMapping(sitemap);
           done();
         });
@@ -56,7 +53,7 @@ describe('Find visual differences between Production and Staging', function() {
               client.resizeWindow(width, 5000).pause(1000)
                 .perform((client, done) => {
                   takeScreenshot(client,
-                    `PRODUCTION-${slug.replace(new RegExp('/', 'g'), '|')}-${width}`
+                    `PRODUCTION-${imageModFunc(slug, width)}`
                   );
                   next();
                   done();
@@ -66,9 +63,11 @@ describe('Find visual differences between Production and Staging', function() {
             done();
           });
       }, () => nextTest());
+
     });
 
     it('Take pictures of Staging in different screen sizes.', (client, nextTest) => {
+
       async.eachSeries(urlArray, (slug, next) => {
         client
         //TODO: change this to staging url.
@@ -80,7 +79,7 @@ describe('Find visual differences between Production and Staging', function() {
               client.resizeWindow(width, 5000).pause(1000)
                 .perform((client, done) => {
                   takeScreenshot(client,
-                    `STAGING-${slug.replace(new RegExp('/', 'g'), '|')}-${width}`
+                    `STAGING-${imageModFunc(slug, width)}`
                   );
                   next();
                   done();
@@ -90,13 +89,14 @@ describe('Find visual differences between Production and Staging', function() {
             done();
           });
       }, () => nextTest());
+
     });
 
     it('Compare staging and production screenshots', (client, done) => {
+
       async.eachSeries(urlArray, (slug, nextSlug) => {
           async.eachSeries(viewports, (width, nextWidth) => {
-            let imgMod = `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
-            compareImages(`PRODUCTION-${imgMod}`, `STAGING-${imgMod}`, res => {
+            compareImages(`PRODUCTION-${imageModFunc(slug, width)}`, `STAGING-${imageModFunc(slug, width)}`, res => {
               console.log(`
               ---------------------------------
               | Page: ${slug} @ ${width} px
@@ -107,6 +107,7 @@ describe('Find visual differences between Production and Staging', function() {
             });
           }, () => nextSlug())
       }, () => console.log("DONE COMPARING"))
+
     });
 
 
