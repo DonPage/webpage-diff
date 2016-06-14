@@ -8,7 +8,7 @@ var staging_1 = require('../config/environment/staging');
 var urlArray = [];
 /**
  * The different viewports you want to test.
- * @var viewports
+ * @let viewports
  */
 var viewports = [320, 768, 1200];
 /**
@@ -19,8 +19,13 @@ var viewports = [320, 768, 1200];
  * @return {string} modString - String with "|" instead of "/" and width attached.
  */
 var imageModFunc = function (slug, width) { return (slug.replace(new RegExp('/', 'g'), '|') + "-" + width); };
+/**
+ * A recursive function is needed to go through an object with urls and return an array.
+ * @function recursiveObjMapping
+ * @param {object} obj - Sitemap object.
+ * @return {void}
+ */
 function recursiveObjMapping(obj) {
-    // console.log('obj ', obj);
     for (var key in obj) {
         if (typeof (obj[key]) === 'string')
             urlArray.push(obj[key]);

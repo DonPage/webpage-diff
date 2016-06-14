@@ -9,7 +9,7 @@ let urlArray = [];
 
 /**
  * The different viewports you want to test.
- * @var viewports
+ * @let viewports
  */
 let viewports = [320, 768, 1200];
 
@@ -22,8 +22,13 @@ let viewports = [320, 768, 1200];
  */
 const imageModFunc = (slug: string, width: number): string => `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
 
+/**
+ * A recursive function is needed to go through an object with urls and return an array.
+ * @function recursiveObjMapping
+ * @param {object} obj - Sitemap object.
+ * @return {void}
+ */
 function recursiveObjMapping(obj) {
-  // console.log('obj ', obj);
   for (let key in obj) {
     if (typeof(obj[key]) === 'string') urlArray.push(obj[key]);
     else if (typeof(obj[key]) === 'function') urlArray.push(obj[key]());
