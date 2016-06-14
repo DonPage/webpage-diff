@@ -6,17 +6,21 @@ import {production} from '../config/environment/production';
 import {staging} from '../config/environment/staging';
 
 let urlArray = [];
+
+/**
+ * The different viewports you want to test.
+ * @var viewports
+ */
 let viewports = [320, 768, 1200];
 
 /**
  * A Function is needed to replace slashes in URLs so when saving, they are not put into a directory.
- * In this case, we are replacing "/" with "|" and attaching the viewport width at the end of the file.
  * @function imageModFunc
- * @param {string} slug URL slug.
- * @return {number} width Viewport width.
+ * @param {string} slug - URL slug.
+ * @param {number} width - Viewport width.
+ * @return {string} modString - String with "|" instead of "/" and width attached.
  */
-const imageModFunc = (slug: string, width: number) => `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
-
+const imageModFunc = (slug: string, width: number): string => `${slug.replace(new RegExp('/', 'g'), '|')}-${width}`;
 
 function recursiveObjMapping(obj) {
   // console.log('obj ', obj);

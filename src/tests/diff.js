@@ -6,13 +6,17 @@ var async = require('async');
 var production_1 = require('../config/environment/production');
 var staging_1 = require('../config/environment/staging');
 var urlArray = [];
+/**
+ * The different viewports you want to test.
+ * @var viewports
+ */
 var viewports = [320, 768, 1200];
 /**
  * A Function is needed to replace slashes in URLs so when saving, they are not put into a directory.
- * In this case, we are replacing "/" with "|" and attaching the viewport width at the end of the file.
  * @function imageModFunc
- * @param {string} slug URL slug.
- * @return {number} width Viewport width.
+ * @param {string} slug - URL slug.
+ * @param {number} width - Viewport width.
+ * @return {string} modString - String with "|" instead of "/" and width attached.
  */
 var imageModFunc = function (slug, width) { return (slug.replace(new RegExp('/', 'g'), '|') + "-" + width); };
 function recursiveObjMapping(obj) {
