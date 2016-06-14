@@ -5,6 +5,10 @@ import * as async from 'async';
 import {production} from '../config/environment/production';
 import {staging} from '../config/environment/staging';
 
+/**
+ * Placeholder variable for holding urls once sitemap goes through "@function imageModFunc".
+ * @let urlArray
+ */
 let urlArray = [];
 
 /**

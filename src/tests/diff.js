@@ -5,6 +5,10 @@ var sitemap_1 = require('../misc/sitemap');
 var async = require('async');
 var production_1 = require('../config/environment/production');
 var staging_1 = require('../config/environment/staging');
+/**
+ * Placeholder variable for holding urls once sitemap goes through "@function imageModFunc".
+ * @let urlArray
+ */
 var urlArray = [];
 /**
  * The different viewports you want to test.
