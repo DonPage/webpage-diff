@@ -29,6 +29,7 @@ describe('Find visual differences between Production and Staging', function() {
         .waitForElementVisible('body', 20000)
         .perform(() => {
           recursiveObjMapping(sitemap);
+          urlArray.push('/last-page');
           done();
         })
         .pause(5000);
