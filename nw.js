@@ -1,5 +1,5 @@
 "use strict";
-var nw = {
+const nw = {
     src_folders: ['./src/tests'],
     output_folder: './results',
     test_runner: 'mocha',

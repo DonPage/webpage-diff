@@ -41,6 +41,7 @@ function recursiveObjMapping(obj) {
 }
 
 
+
 describe('Find visual differences between Production and Staging', function() {
 
 
